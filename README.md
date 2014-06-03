@@ -7,8 +7,6 @@ librope is implemented using skip lists, which have the same big-O time complexi
 
 librope is _fast_. It will happily perform ~1-5 million edit operations per second, depending on the size of your strings. Inserts and deletes in librope outperform straight C strings for any document longer than a few hundred bytes.
 
-This library is still pretty new. Let me know if you find any issues!
-
 Usage
 -----
 
@@ -28,6 +26,9 @@ rope_delete(r, 2, 6);
 uint8_t *str = rope_createcstr(r, NULL);
 
 // str now contains "Hi!"!
+
+// Done with the rope
+rope_free(r);
 ```
 
 Wide Character String Compatibility
@@ -44,7 +45,9 @@ For more information, read my [blog post about it](http://josephg.com/string-len
 Long story short, if you need to interoperate with strings from any of these dodgy languages, here's what you do:
 
 - Compile with `-DROPE_WCHAR=1`. This macro enables the expensive wchar bookkeeping.
-- Use the alternate insert & delete functions `rope_insert_at_wchar(...)` and `rope_del_at_wchar(...)`. Take a look at the header file for details.
+- Use the alternate insert & delete functions `rope_insert_at_wchar(...)` and `rope_del_at_wchar(...)` when your index / size is specified in UTF-16 offsets.
+
+Take a look at the header file for documentation.
 
 #### Beware:
 
